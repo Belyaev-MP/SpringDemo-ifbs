@@ -21,51 +21,51 @@ import my.self.demo.web.form.UserRegistrationFormValidator;
 @Controller
 public class UserController {
 
-	@Autowired
-	UserService userService;
-	
-	@Autowired
-	private UserRegistrationFormValidator userFormValidator;
-	
-	@InitBinder("userForm")
-	private void initBinder(WebDataBinder binder) {
-		binder.addValidators(userFormValidator);
-	}
+    @Autowired
+    UserService userService;
 
-	@GetMapping("/user/list")
-	public String index(Model model) {
+    @Autowired
+    private UserRegistrationFormValidator userFormValidator;
 
-		model.addAttribute("users", userService.getList());
+    @InitBinder("userForm")
+    private void initBinder(WebDataBinder binder) {
+        binder.addValidators(userFormValidator);
+    }
 
-		return "/user/list";
-	}
+    @GetMapping("/user/list")
+    public String index(Model model) {
 
-	@GetMapping("/user/registration")
-	public ModelAndView registration(ModelAndView model) {
-		model.addObject("userForm", new UserRegistrationForm());
-		model.setViewName("/user/registration");
-		
-		return model;
-	}
-	
-	@PostMapping("/user/registration")
-	public ModelAndView registrationPost(ModelAndView model,
-			@Valid @ModelAttribute("userForm") UserRegistrationForm userForm,
-			BindingResult result) {
-		
-		System.out.println("Email: " + userForm.getEmail());
-		System.out.println("Password: " + userForm.getPassword());
-		
-		if(result.hasErrors()) {
-			model.addObject("userForm", userForm);
-			model.setViewName("/user/registration");
-		} else {
-			
-			model.setViewName("redirect:/");
-		}
-		
-		
-		return model;
-	}
-	
+        model.addAttribute("users", userService.getList());
+
+        return "/user/list";
+    }
+
+    @GetMapping("/user/registration")
+    public ModelAndView registration(ModelAndView model) {
+        model.addObject("userForm", new UserRegistrationForm());
+        model.setViewName("/user/registration");
+
+        return model;
+    }
+
+    @PostMapping("/user/registration")
+    public ModelAndView registrationPost(ModelAndView model,
+            @Valid @ModelAttribute("userForm") UserRegistrationForm userForm,
+            BindingResult result) {
+
+        System.out.println("Email: " + userForm.getEmail());
+        System.out.println("Password: " + userForm.getPassword());
+
+        if(result.hasErrors()) {
+            model.addObject("userForm", userForm);
+            model.setViewName("/user/registration");
+        } else {
+            userService.createUserFromRegistrationForm(userForm);
+            model.setViewName("redirect:/");
+        }
+
+
+        return model;
+    }
+
 }
