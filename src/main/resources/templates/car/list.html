@@ -5,6 +5,8 @@
 
 <head>
 	<meta charset="UTF-8">
+	<meta name="_csrf" th:content="${_csrf.token}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
 	<title  th:text="${title}">Insert title here</title>
 </head>
 

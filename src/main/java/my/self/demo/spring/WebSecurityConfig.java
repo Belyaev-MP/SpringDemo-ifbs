@@ -63,9 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.alwaysRemember(false)
 				.rememberMeParameter("remember-me")
 				.rememberMeCookieName("auth")
-				.tokenRepository(tokenRepository())
-			.and()
-				.csrf().disable();
+				.tokenRepository(tokenRepository());
 	}
 	
 	@Autowired

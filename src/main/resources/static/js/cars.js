@@ -1,9 +1,15 @@
 function carFilter(elementId) {
 	let val = document.getElementById(elementId).value;
+
+	let csrfHeader = document.head.querySelector('meta[name=\'_csrf_header\']').content;
+	let csrfToken = document.head.querySelector('meta[name=\'_csrf\']').content;
+
+	console.log(csrfHeader + ":" + csrfToken);
 	
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', '/ajax/car-filter');
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xhr.setRequestHeader(csrfHeader, csrfToken);
 	
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState != 4) {
